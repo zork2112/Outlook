@@ -36,8 +36,6 @@ Set objDoc = Application.ActiveInspector.WordEditor
 Set objSel = objDoc.Windows(1).Selection
 objSel.TypeText Text:="This has been taken care of." + Chr(13) + Chr(13) + "Thanks," + Chr(13) + "Rob"
 
-MsgBox ("Hello")
-
 ' replyItem.Send  ' This will send the email, and I had too many accidental sends
 
 'objItem.ReplyAll(Response, false)
