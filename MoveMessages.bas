@@ -95,13 +95,13 @@ Sub MoveToConsultants()
 End Sub
 Sub MoveToCopado()
 
-  MoveMessage ("\Action\Salesforce\Copado")
+  MoveMessage ("\Action\Copado")
   
 End Sub
 
 Sub MoveToCopadoPromotion()
 
-  MoveMessage ("\Action\Salesforce\Copado\Copado Promotion")
+  MoveMessage ("\Action\Copado\Deployments")
   
 End Sub
 

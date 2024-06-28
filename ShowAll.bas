@@ -11,7 +11,7 @@ On Error Resume Next
 'Next
 
 Dim fld As Outlook.Folder
-Set fld = Application.ActiveExplorer.CurrentFolder
+Set fld = Application.ActiveExplorer.currentFolder
 'fld.ShowItemCount = olShowTotalItemCount
 ShowTotalInFolders fld
 
@@ -35,7 +35,7 @@ End Sub
 Private Sub ShowTotal()
 
 Dim fld As Outlook.Folder
-Set fld = Application.ActiveExplorer.CurrentFolder
+Set fld = Application.ActiveExplorer.currentFolder
 
 fld.ShowItemCount = olShowUnreadItemCount
 fld.ShowItemCount = olShowTotalItemCount
