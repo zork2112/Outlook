@@ -15,7 +15,7 @@ Sub Initialize_handler()
  Set myNS = Application.GetNamespace("MAPI")
 
  'Set myFolders = myNS.GetDefaultFolder(olFolderDeletedItems).Folders
- Set myOlFolders = myNS.ActiveExplorer.CurrentFolder
+ Set myOlFolders = myNS.ActiveExplorer.currentFolder
  
 End Sub
  
