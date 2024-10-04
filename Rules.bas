@@ -58,3 +58,40 @@ End Sub
 
 
 
+
+Sub UpdateOutlookRule()
+    Dim colRules As Outlook.Rules
+    Dim oRule As Outlook.Rule
+    Dim oAddressRuleCondition As Outlook.AddressRuleCondition
+    Dim ruleName As String
+    Dim specificWords As String
+
+    ' Define the rule name and specific words to look for
+    ruleName = "Sender Address Rule"
+    specificWords = "example" ' Change this to the specific words you want to filter
+
+    ' Get the rules collection
+    Set colRules = Application.Session.DefaultStore.GetRules()
+
+    ' Check if the rule already exists
+    On Error Resume Next
+    Set oRule = colRules(ruleName)
+    On Error GoTo 0
+
+    ' If the rule doesn't exist, create it
+    If oRule Is Nothing Then
+        Set oRule = colRules.Create(ruleName, olRuleReceive)
+    End If
+
+    ' Clear existing conditions
+    oRule.Conditions.Clear
+
+    ' Create a new AddressRuleCondition for the sender's address
+    Set oAddressRuleCondition = oRule.Conditions.SenderAddress
+    oAddressRuleCondition.Enabled = True
+    oAddressRuleCondition.Address = specificWords
+
+    ' Save the updated rules
+    colRules.Save
+End Sub
+

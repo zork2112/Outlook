@@ -308,6 +308,12 @@ Sub MoveToSalesforce()
   MoveMessage ("\Action\Salesforce")
   
 End Sub
+Sub MoveToSalesforceErrors()
+
+  MoveMessage ("\Action\Salesforce\Errors")
+  
+End Sub
+
 Sub MoveToSalesforceIntegration()
 
   MoveMessage ("\Action\Salesforce\Pipeline - Integration")
