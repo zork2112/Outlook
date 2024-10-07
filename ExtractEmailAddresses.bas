@@ -1,5 +1,6 @@
 Attribute VB_Name = "ExtractEmailAddresses"
-Sub ExtractEmail()
+Sub AddEmailToDeleteRule()
+
 Dim OlApp As Outlook.Application
 Dim Mailobject As Object
 Dim Email As String
@@ -20,8 +21,8 @@ Set st = Application.Session.DefaultStore
 Set myRules = st.GetRules
 'Set myRules = Application.Session.DefaultStore.GetRules() ' Could do in one step
 
-'Set thisRule = myRules.Item("Delete Spam and Junk")
-Set thisRule = myRules.Item("TestMe")
+Set thisRule = myRules.Item("Delete Spam and Junk")
+'Set thisRule = myRules.Item("TestMe")
 
 'Debug.Print (thisRule.Name)
 
@@ -30,19 +31,20 @@ Dim currentRuleCondition As Outlook.AddressRuleCondition
 Set currentRuleCondition = thisRule.Conditions.SenderAddress
 
 ' Cannot add to existing condition - have to replace, so create a collection, add to it, convert to array
+
+' Only add unique values
+
 Dim col As New Collection
 For Each a In currentRuleCondition.Address
-   If Not (Exists(col, a)) Then col.Add a '  dynamically add value to the end
+   If Not (CollectionValueExists(col, a)) Then col.Add a
 Next
+
 
 ' Iterate through the emails in the folder you want to use for exclusions (usually Unknown contacts for me)
 For Each Mailobject In Folder.Items
    
    Email = Mailobject.SenderEmailAddress 'Properties: Mailobject.To, Mailobject.Sender, Mailobject.SenderEmailAddress, Mailobject.SenderName and Mailobject.Body, Mailobject.HTMLBody or Mailobject.RTFBody
-   Debug.Print (Email)
-   Debug.Print (Exists(col, Email))
-   
-   If Not (Exists(col, Email)) Then col.Add Email '  dynamically add value to the end col.Add (Email)
+   If Not (CollectionValueExists(col, Email)) Then col.Add Email
    
 Next
 
@@ -106,27 +108,17 @@ Function toArray(col As Collection)
   Next
   toArray = arr
 End Function
-Function Contains(col As Collection, key As Variant) As Boolean
-Dim obj As Variant
-On Error GoTo err
-    Contains = True
-    IsObject (col(key))
-    'obj = col(key)
-    Exit Function
-err:
 
-    Contains = False
+' Check to see if a value is in a collection.
+' Functional approcah to mimic dicitonary `exists` method.
+Public Function CollectionValueExists(ByRef target As Collection, value As Variant) As Boolean
+    Dim index As Long
+    For index = 1 To target.count
+        If target(index) = value Then
+            CollectionValueExists = True
+            Exit For
+        End If
+    Next index
 End Function
 
-Function Exists(coll As Collection, key As Variant) As Boolean
 
-    Exists = False
-    
-    On Error GoTo EH
-
-    'IsObject (coll.Item(key))
-    obj = coll(key)
-    
-    Exists = True
-EH:
-End Function
