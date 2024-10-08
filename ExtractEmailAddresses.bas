@@ -53,6 +53,7 @@ For Each Mailobject In Folder.Items
    
    Email = Mailobject.SenderEmailAddress 'Properties: Mailobject.To, Mailobject.Sender, Mailobject.SenderEmailAddress, Mailobject.SenderName and Mailobject.Body, Mailobject.HTMLBody or Mailobject.RTFBody
    If Not (CollectionValueExists(col, Email)) Then col.Add Email
+   Mailobject.Delete
    
 Next
 
