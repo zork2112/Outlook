@@ -49,8 +49,11 @@ Next
 BeforeCount = col.count
 
 ' Iterate through the emails in the folder you want to use for exclusions (usually Unknown contacts for me)
-For Each Mailobject In Folder.Items
-   
+' VBA has an issue with keeping track when you are deleting items
+' changed from: For Each Mailobject In Folder.Items
+
+For i = Folder.Items.count To 1 Step -1 'Iterates from the end backwards
+   Set Mailobject = Folder.Items(i)
    Email = Mailobject.SenderEmailAddress 'Properties: Mailobject.To, Mailobject.Sender, Mailobject.SenderEmailAddress, Mailobject.SenderName and Mailobject.Body, Mailobject.HTMLBody or Mailobject.RTFBody
    If Not (CollectionValueExists(col, Email)) Then col.Add Email
    Mailobject.Delete
