@@ -7,6 +7,12 @@ Dim Email As String
 Dim NS As NameSpace
 Dim Folder As MAPIFolder
 Dim specificWords As String
+Dim RuleName As String
+Dim ConfirmMessage As String
+Dim ConfirmTitle As String
+Dim BeforeCount As Integer
+Dim AfterCount As Integer
+ 
  
 Set OlApp = CreateObject("Outlook.Application")
 ' Setup Namespace
@@ -21,7 +27,8 @@ Set st = Application.Session.DefaultStore
 Set myRules = st.GetRules
 'Set myRules = Application.Session.DefaultStore.GetRules() ' Could do in one step
 
-Set thisRule = myRules.Item("Delete Spam and Junk")
+RuleName = "Delete Spam and Junk"
+Set thisRule = myRules.Item(RuleName)
 'Set thisRule = myRules.Item("TestMe")
 
 'Debug.Print (thisRule.Name)
@@ -39,6 +46,7 @@ For Each a In currentRuleCondition.Address
    If Not (CollectionValueExists(col, a)) Then col.Add a
 Next
 
+BeforeCount = col.count
 
 ' Iterate through the emails in the folder you want to use for exclusions (usually Unknown contacts for me)
 For Each Mailobject In Folder.Items
@@ -64,6 +72,13 @@ myRules.Save
 
 Set OlApp = Nothing
 Set Mailobject = Nothing
+
+AfterCount = col.count
+
+ConfirmTitle = "Updated Rule: " + RuleName
+ConfirmMessage = "Added " & CStr(AfterCount - BeforeCount) & " Email Addresses." & vbCrLf & vbCrLf & "Total Email Addresses: " + CStr(AfterCount)
+
+Response = MsgBox(ConfirmMessage, vbInformation, ConfirmTitle)
 
 End Sub
 
